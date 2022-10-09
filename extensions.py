@@ -13,12 +13,18 @@ class DataCheck:
     def datacheck(message: telebot.types.Message):
         data = message.text.split(' ')
 
-        if len(data) != 3:
+        try:
+            if len(data) != 3:
+                raise ValueError
+        except ValueError:
             raise APIException('Вы должны ввести три параметра!')
 
         base, quote, amount = data
 
-        if base == quote:
+        try:
+            if base == quote:
+                raise ValueError
+        except ValueError:
             raise APIException('Вы должны ввести разные валюты!')
 
         try:
@@ -36,7 +42,10 @@ class DataCheck:
         except ValueError:
             raise APIException(f'Не удалось обработать количество: {amount}')
 
-        if amount <= 0:
+        try:
+            if amount <= 0:
+                raise  ValueError
+        except ValueError:
             raise APIException('Количество валюты должно быть больше нуля!')
 
         return True
